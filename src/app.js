@@ -21,7 +21,7 @@ var fs = require('fs'),
     main = function () {
         if (config.run && config.run.devices) {
             config.run.devices.forEach(function (deviceConfig) {
-                if(!deviceConfig.disable){
+                if(deviceConfig.disable === "false" || !deviceConfig.disable){
                     runnerRouter.run(deviceConfig, serverStarter);
                 }
             });

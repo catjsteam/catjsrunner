@@ -48,7 +48,7 @@
         "_host" : "localhost",
         "host" : "auto",
         "port" : "8089",
-        "autostart" : {
+        "_autostart" : {
             "args": ["-s"],
             "nodeStartFile": "catcli.cmd",
             "_cwd": "/home/user/catgh/CATCore/test/sencha/cat-project",

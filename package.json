@@ -1,6 +1,6 @@
 {
-    "name": "mobilerunner",
-    "version": "0.2.5",
+    "name": "catjsrunner",
+    "version": "0.2.7",
     "author": {
         "name": "Pablo Retyk"
     },
@@ -21,7 +21,7 @@
     "main" : "./lib/app.js",
     "repository": {
         "type": "git",
-        "url": " https://github.com/HPSoftware/CAT"
+        "url": "https://github.com/catjsteam/catjsrunner"
     },
     "dependencies": {
         "adbkit": "~1.1.4"

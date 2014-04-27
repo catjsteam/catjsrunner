@@ -22,7 +22,7 @@ module.exports = function (grunt) {
                 },
                 apk: {
                     expand: true,
-                    cwd: '../mobile/android/target/',
+                    cwd: '../CAT/runner/mobile/android/target/',
                     src: '*.apk',
                     dest: 'lib/resources/'
                 }

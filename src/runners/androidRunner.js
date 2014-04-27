@@ -63,11 +63,15 @@ var base = require('./base'),
 
                     console.log('succesfully installed on ' + id);
 
+                    var servermetadata ={
+                        host :  that.getServerStarter().getHost(),
+                        port: that.getServerStarter().getPort(),
+                        id: id
+                    }
                     var options = {
                         component: 'com.hp.aamobile.cat/.Main',
                         extras: [
-                            {"key": "IP", "value": that.getServerStarter().getHost()},
-                            {"key": "PORT", "value": that.getServerStarter().getPort()}
+                            {"key": "SERVERMETADATA", "value":  JSON.stringify(servermetadata) }
                         ]
                     }
 
