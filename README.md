@@ -1,6 +1,6 @@
-# MobileRunner
+# CATJS Runner
 
-Mobile runner is a command line tool that helps you run your web application on multiple devices including, Android, iOS, and PC browsers.
+CATJS runner is a command line tool that helps you run your web application on multiple devices including, Android, iOS, and PC browsers.
 This tool is very useful when combined with mobile web automation frameworks like [catjs](https://www.npmjs.org/package/catjs).
 
 
