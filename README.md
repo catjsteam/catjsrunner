@@ -6,13 +6,23 @@ This tool is very useful when combined with mobile web automation frameworks lik
 
 ##Installation
 We recommend to install mobilerunner as a cli
- `npm install --g mobilerunner`
+ `npm install -g mobilerunner`
 
  Command line syntax:
 
  `mobilerunner <configfile>`
 
- If ommitted the *mobilerunner* will search for a config file named *TestRunConfig.json* in the working directory.
+ If omitted the *mobilerunner* will search for a config file named *TestRunConfig.json* in the working directory.  
+
+## Support
+ Currently supported browsers names for cross platform (Linux, Darwin and win32):  
+ 
+ * firefox
+ * safari
+ * chrome
+ 
+ In case you wish to open other browser just set the name with the application's name.  
+ We are using "open" module for staring the applications.
 
 ##Config file
 
@@ -45,6 +55,8 @@ This is the configuration of the server
 
 ####port
 
+####protocol
+
 ####autostart (optional)
 
 Tells if mobilerunner will start the server according to the following configuration
@@ -69,18 +81,18 @@ Working directory
                  "disable": true,
                  "type": "localpc",
                  "runner": {
-                     "name": "google-chrome",
+                     "name": "chrome",
                      "address": "/index.html",
-                     "options": {"path": "."}
+                     "options": {"instances":1}
                  }
              },
              {
                  "disable": false,
                  "type": "localpc",
                  "runner": {
-                     "name": "chrome",
+                     "name": "firefox",
                      "address": "/index.html",
-                     "options": {"path": "{LOCALAPPDATA}/Google/Chrome/Application/chrome.exe"}
+                     "options": {"instances":1}
                  }
              },
              {
