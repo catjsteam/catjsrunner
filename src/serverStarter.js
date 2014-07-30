@@ -7,10 +7,12 @@ module.exports = function (processConfig, arguments) {
         isServerUp = false;
 
     function myIp() {
-        var os = require('os');
-        var address = 'localhost';
-        var ifaces = os.networkInterfaces();
-        for (var dev in ifaces) {
+        var os = require('os'),
+            address = 'localhost',
+            ifaces = os.networkInterfaces(),
+            dev;
+        
+        for (dev in ifaces) {
             ifaces[dev].forEach(function (details) {
                 if (details.family == 'IPv4') {
                     if (dev.toLowerCase().indexOf('wireless') != -1 ||
@@ -62,14 +64,16 @@ module.exports = function (processConfig, arguments) {
                 isServerUp = true;
             }
             else {
-                console.info("Server already up");
+                console.info("Server is already up...");
             }
-
-
         },
 
         getPort: function () {
             return processConfig.port;
+        },
+        
+        getProtocol: function() {
+            return ("protocol" in processConfig ? processConfig.protocol : "http");            
         },
 
         getHost: function () {
