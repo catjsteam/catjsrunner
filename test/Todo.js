@@ -1,8 +1,6 @@
 /**
  * Created by retyk on 16/02/14.
  */
-var assert = require("assert");
-
 
 require("./../lib/app.js").run({
     "run": {
