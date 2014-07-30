@@ -2,21 +2,21 @@
     "run": {
         "devices": [
             {
-                "disable": true,
+                "disable": false,
                 "type": "localpc",
                 "runner": {
-                    "name": "google-chrome",
+                    "name": "chrome",
                     "address": "/index.html",
-                    "options": {"path": "."}
+                    "options": {"instances": 1}
                 }
             },
             {
                 "disable": false,
                 "type": "localpc",
                 "runner": {
-                    "name": "chrome",
+                    "name": "firefox",
                     "address": "/index.html",
-                    "options": {"path": "{LOCALAPPDATA}/Google/Chrome/Application/chrome.exe"}
+                    "options": {"instances": 1}
                 }
             },
             {
