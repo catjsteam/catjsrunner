@@ -4,114 +4,113 @@
 
 var os = require('os'),
     fs = require('fs'),
-
+    openapp = require("open"),
     base = require('./base'),
+    browserMap = require('./browsersMap.js'),
+
     browserRunner = function (spec) {
 
         var that = base(spec);
 
-        function getCommandLineFromNameForLinux(name) {
-            switch (name) {
-                case 'chrome':
-                case 'google-chrome':
-                    return 'google-chrome';
-                case 'safari':
-                    return 'safari';
-                case 'firefox':
-                    return 'firefox';
-                case 'opera':
-                    return 'opera';
-
-            }
-        }
-
-        function getCommandLineFromNameForWin32(name) {
-            var programFilesFolder;
-            if (os.arch() === 'x64'){
-                programFilesFolder = "{PROGRAMFILES(X86)}"
-            } else {
-                programFilesFolder = "{PROGRAMFILES}"
-            }
-
-            switch (name) {
-                case 'chrome':
-                case 'google-chrome':
-                    var defaultPaths = [
-                        '{LOCALAPPDATA}/Google/Chrome/Application/chrome.exe',
-                        programFilesFolder + '/Google/Chrome/Application/chrome.exe'
-                    ];
-                    var path = 'chrome.exe'; //default
-                    defaultPaths.forEach(function(item){
-                        var itemReplaced = item.replace(/{([^}]+)}/g, function (_, n) {
-                            return process.env[n];
-                        })
-                        console.log('Looking for from chrome at ' + item);
-                        if(fs.existsSync(itemReplaced)){
-                            console.log(itemReplaced + ' found');
-                            path = itemReplaced;
-                            return;
-                        }
-                        console.log (itemReplaced + ' not found');
-                    })
-                    return path;
-                case 'safari':
-                    return 'safari';
-                case 'firefox':
-                    return programFilesFolder + '/Mozilla Firefox/firefox.exe';
-                case 'opera':
-                    return 'opera';
-
-            }
-        }
-
-        function getCommandLineFromNameForDarwin(name) {
-            return getCommandLineFromNameForLinux(name);
-        }
-
-        function getCommandLineFromName(name) {
-
-            var platform = os.platform();
-
-            switch (platform) {
-                case 'linux':
-                    return getCommandLineFromNameForLinux(name);
-                case 'win32':
-                    return getCommandLineFromNameForWin32(name);
-                case 'darwin' :
-                    return getCommandLineFromNameForDarwin(name);
-            }
-        }
-
         that.internalRun = function () {
-            console.log("running on pc " + that.getRunnerConfig().name);
 
-            var spawn = require('child_process').spawn,
-                browserCommandLine;
-            var browserPath;
+            function _getName(name) {
+                var platform,
+                    browserPlatformSupport,
+                    supportedBrowsers = ["chrome", "firefox", "safari"],
+                    type, idx = 0, size = supportedBrowsers.length;
 
-            if (that.getRunnerConfig() && that.getRunnerConfig().options && that.getRunnerConfig().options.path) {
-                browserPath = that.getRunnerConfig().options.path;
+                if (name) {
+                    platform = os.platform();
+                    browserPlatformSupport = browserMap[platform];
 
-            } else {
-                browserPath = getCommandLineFromName(that.getRunnerConfig().name)
+                    if (browserPlatformSupport) {
+                        browserPlatformSupport = browserPlatformSupport.browser;
+                        if (name in browserPlatformSupport) {
+                            return browserPlatformSupport[name][0];
+
+                        } else {
+                            for (idx = 0; idx < size; idx++) {
+                                type = supportedBrowsers[idx];
+                                if (name.toLowerCase().indexOf(type) !== -1) {
+                                    console.warn("Your browser configuration name is deprecated, for cross OS support use type: '" + type + "' ");
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+                return name;
             }
 
-            browserCommandLine = browserPath.replace(/{([^}]+)}/g, function (_, n) {
-                return process.env[n];
-            })
+            function _open(counter, url, alias, callback) {
+                openapp(url, alias, function (err) {
+                    if (err) {
+                        console.log("Error occurred while trying to open the application: '" + alias + "' error:", err);
+                    }
 
-            var url = 'http://' + that.getServerStarter().getHost() + ':' + that.getServerStarter().getPort() + that.getRunnerConfig().address;
+                    if (callback) {
+                        callback.call(this);
+                    }                  
+                });
 
+                counter++;
+                if (counter < instances) {
+                    setTimeout(function() {
 
-            var ls = spawn(browserCommandLine, [url], { env: process.env});
+                        function getDateTime() {
 
-            ls.stdout.on('data', function (data) {
-                console.log('stdout: ' + data);
-            });
+                            var date = new Date();
 
-            ls.on('error', function (data) {
-                console.error('Error: trying to run on localpc:' + data);
-            });
+                            var hour = date.getHours();
+                            hour = (hour < 10 ? "0" : "") + hour;
+
+                            var min  = date.getMinutes();
+                            min = (min < 10 ? "0" : "") + min;
+
+                            var sec  = date.getSeconds();
+                            sec = (sec < 10 ? "0" : "") + sec;
+
+                            var year = date.getFullYear();
+
+                            var month = date.getMonth() + 1;
+                            month = (month < 10 ? "0" : "") + month;
+
+                            var day  = date.getDate();
+                            day = (day < 10 ? "0" : "") + day;
+
+                            return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+
+                        }
+                        console.log(getDateTime());
+                        
+                        _open(counter, url, alias, callback);
+                    }, (instanceDelay));
+                }
+            }
+            
+            var runnerConfig = that.getRunnerConfig(),
+                serverConfig = that.getServerStarter(),
+                name = runnerConfig.name,
+                alias = _getName(name),
+                host = serverConfig.getHost(),
+                port = serverConfig.getPort(),
+                address = runnerConfig.address,
+                protocol = serverConfig.getProtocol(),
+                options = runnerConfig.options,
+                instances = ( (options && "instances" in options) ? options.instances : 1),
+                instanceDelay = ( (options && "instanceDelay" in options) ? options.instanceDelay : 3000),
+                counter = 0,
+
+                url = [protocol, "://" + host, ':', port, address].join("");
+
+            console.log("Running Application: '" + alias + "'");
+           
+            _open(counter, url, alias);
+           
         }
 
         return that;
