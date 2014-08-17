@@ -1,6 +1,6 @@
 {
   "name": "catjsrunner",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "author": {
     "name": "Pablo Retyk"
   },
@@ -24,7 +24,7 @@
     "url": "https://github.com/catjsteam/catjsrunner"
   },
   "dependencies": {
-    "adbkit": "~1.1.4",
+    "adbkit": "~2.0.15",
     "open": "~0.0.5"
   },
   "scripts": {
