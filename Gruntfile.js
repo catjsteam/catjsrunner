@@ -51,6 +51,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.registerTask('build', ['clean', 'copy']);
-    grunt.registerTask('test', ['exec:mocha']);
+    grunt.registerTask('test', []);
     grunt.registerTask('default', ['test']);
 }
