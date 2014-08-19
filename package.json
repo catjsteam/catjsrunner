@@ -28,6 +28,7 @@
     "open": "~0.0.5"
   },
   "scripts": {
+      "test": "node test/Todo.js"
   },
   "bin": {
     "catrunner": "lib/app.js"
