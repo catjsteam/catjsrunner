@@ -1,0 +1,9 @@
+/*.tgz
+/npm-debug.log
+/Gruntfile.js
+/src/
+/test/
+/temp/
+/git_hooks/
+/.idea
+/testRunConfig.json
