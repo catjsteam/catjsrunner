@@ -42,21 +42,10 @@ require("./../lib/app.js").run({
                 }
             }
         ]
-    },
-    "runningEnvironment": {
-        "type": "local|lab",
-        "host": "",
-        "authtoken": ""
-    },
+    },   
     "server": {
-        "_host" : "localhost",
         "host" : "auto",
-        "port" : "8089",
-        "_autostart" : {
-            "args": ["-s"],
-            "nodeStartFile": "catcli.cmd",
-            "_cwd": "/home/user/catgh/CATCore/test/sencha/cat-project",
-            "cwd": "c:/catgithub/CATCore/test/sencha/cat-project"
-        }
+        "port" : "8089"
+       
     }
 });

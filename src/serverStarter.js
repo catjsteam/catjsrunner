@@ -1,5 +1,7 @@
 /**
  * Created by retyk on 20/01/14.
+ * 
+ * 
  */
 
 module.exports = function (processConfig, arguments) {
@@ -58,6 +60,10 @@ module.exports = function (processConfig, arguments) {
 
     return {
 
+        /**
+         * @obsolete Use catjs module to start the server
+         * 
+         */
         startServer: function () {
             if (isServerUp !== true && processConfig.autostart) {
                 run(processConfig.autostart);

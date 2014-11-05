@@ -18,17 +18,12 @@ var base = function (spec) {
     }
 
     that.run = function () {
-        that.getServerStarter().startServer();
+        // @obsolete Use catjs module to start the server
+        // that.getServerStarter().startServer();
         that.internalRun();
     }
 
     return that;
 }
-
-
-
-
-
-
 
 module.exports = base;

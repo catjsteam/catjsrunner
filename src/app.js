@@ -3,15 +3,6 @@
  * Created by retyk on 14/01/14.
  */
 
-var sample = {
-    "run": {"devices": [
-        {"type": "localpc|mobile", "id": "id|all", "runner": {"name": "Chrome|Firefox|CatApp|Phantom", "path": "'%LOCALAPPDATA%\\Google\\Chrome\\Application"}}
-    ]},
-    "runningEnvironment": {"type": "local|lab", "host": "", "authtoken": ""},
-    "catproject": {"path": "['c:\\AAMobile\\cat\\catcli'"}
-};
-
-
 var fs = require('fs'),
     ServerStarter = require('./serverStarter'),
     runnerRouter = require('./runnerRouter'),
