@@ -12,8 +12,8 @@ var fs = require('fs'),
     main = function () {
         if (config.run && config.run.devices) {
             config.run.devices.forEach(function (deviceConfig) {
-                if(deviceConfig.disable === "false" || !deviceConfig.disable){
-                    runnerRouter.run(deviceConfig, serverStarter);
+                if (deviceConfig.disable === "false" || !deviceConfig.disable) {
+                    runnerRouter.run(deviceConfig, serverStarter, {callback: config.callback});
                 }
             });
         } else {
@@ -28,28 +28,69 @@ if (require.main === module) {
     try {
         config = JSON.parse(data);
         serverStarter = new ServerStarter(config.server);
-    } catch(e) {
+
+    } catch (e) {
         console.error("[runner] failed to parse configuration, see error:", e);
     }
     main();
 }
 else {
     // require as module
-    module.exports = function() {
+    module.exports = function () {
 
-        var _module = {
+        var _Info = require("./info/Info.js"),
+            _infoData,
+            _module = {
 
-            run: function(arg) {
-                config = arg;
-                if (!config) {
-                    console.error("[runner] missing configuration argument");
-                    return undefined;
+                init: function(arg) {
+                    config = arg;
+                    if (!config) {
+                        console.error("[runner] missing configuration argument");
+                        return undefined;
+                    }
+                },
+
+                run: function (arg) {
+                    if (arg) {
+                        _module.init(arg);
+                    } else {
+                        if (!config) {
+                            console.warn("[mobilerunner] no valid configuration was found, make sure to pass the configuration object");
+                        }
+                    }
+                    
+                    serverStarter = new ServerStarter(config.server);
+                    main();
+                },
+
+                /**
+                 * Get runnable information
+                 *
+                 */
+                info: function () {
+
+                    var devices;
+
+                    if (!_infoData) {
+
+                        devices = config.run.devices;
+                        _infoData = new _Info();
+
+                        if (devices) {
+                            devices.forEach(function (device) {
+                                var device;
+                                if (device && !device.disable) {
+                                    _infoData.addDevice(device);
+                                }
+                            });
+                        }
+
+                    }
+
+                    return _infoData;
                 }
-                serverStarter = new ServerStarter(config.server);
-                main();
-            }
 
-        };
+            };
 
         return _module;
 

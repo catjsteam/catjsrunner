@@ -11,13 +11,13 @@ function RunnerRouter() {
     }
 
     return    {
-        run: function (key, serverStarter) {
+        run: function (key, serverStarter, opt) {
             var runner = getRunner(key.type);
             var options = {
                 runnerConfig: key.runner,
                 id: key.id,
                 serverStarter: serverStarter};
-            runner(options).run();
+            runner(options).run(opt);
         }
     }
 };

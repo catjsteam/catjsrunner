@@ -3,8 +3,16 @@
  */
 
 var base = function (spec) {
-    var that = {};
+    var that = { cpList: []};
 
+    that.addChildProcess = function(cp) {
+        that.cpList.push(cp);
+    };
+    
+    that.cpkill = function() {
+        return that.cpList;  
+    };
+    
     that.getRunnerConfig = function () {
         return spec.runnerConfig;
     }
@@ -17,10 +25,11 @@ var base = function (spec) {
         return spec.serverStarter;
     }
 
-    that.run = function () {
+    that.run = function (config) {
         // @obsolete Use catjs module to start the server
         // that.getServerStarter().startServer();
-        that.internalRun();
+        that.internalRun(config);
+        
     }
 
     return that;

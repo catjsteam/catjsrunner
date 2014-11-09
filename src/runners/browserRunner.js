@@ -12,8 +12,10 @@ var os = require('os'),
 
         var that = base(spec);
 
-        that.internalRun = function () {
+        that.internalRun = function (config) {
 
+            var callbackarg = (config && "callback" in config ? config.callback : undefined);
+            
             function _getName(name) {
                 var platform,
                     browserPlatformSupport,
@@ -47,15 +49,21 @@ var os = require('os'),
             }
 
             function _open(counter, url, alias, callback) {
-                openapp(url, alias, function (err) {
+                
+                var cp = openapp(url, alias, function (err) {
                     if (err) {
-                        console.log("Error occurred while trying to open the application: '" + alias + "' error:", err);
+                        console.log("[Mobile Runner] Error occurred while trying to open the application: '" + alias + "' error:", err);
                     }
 
+
+                    console.log("[Mobile Runner] Opening application: ", alias, " ", cp.pid);
+                    that.addChildProcess(cp);
+
                     if (callback) {
-                        callback.call(this);
+                        callback.call(this, cp);
                     }                  
-                });
+                });                
+               
 
                 counter++;
                 if (counter < instances) {
@@ -85,11 +93,14 @@ var os = require('os'),
                             return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
 
                         }
-                        console.log(getDateTime());
                         
                         _open(counter, url, alias, callback);
                     }, (instanceDelay));
+                } else {
+                    console.log("[Mobile Runner] Execution completed");
+                    callbackarg.call(that);
                 }
+                                
             }
             
             var runnerConfig = that.getRunnerConfig(),
@@ -107,9 +118,11 @@ var os = require('os'),
 
                 url = [protocol, "://" + host, ':', port, address].join("");
 
-            console.log("Running Application: '" + alias + "'");
+            console.log("[Mobile Runner] Running Application: '" + alias + "'");
            
-            _open(counter, url, alias);
+            _open(counter, url, alias, function(cp) {
+               
+            });
            
         }
 
