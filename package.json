@@ -1,6 +1,6 @@
 {
   "name": "mobilerunner",
-  "version": "0.2.18",
+  "version": "0.2.30",
   "author": {
     "name": "Pablo Retyk"
   },
@@ -25,10 +25,11 @@
   },
   "dependencies": {
     "adbkit": "~2.0.15",
-    "open": "~0.0.5"
+    "open": "~0.0.5",
+    "q": "^1.0.1"
   },
   "scripts": {
-      "test": "node test/Todo.js"
+    "test": "node test/Test.js"
   },
   "bin": {
     "catrunner": "lib/app.js"
