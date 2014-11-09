@@ -5,14 +5,25 @@
 var base = require('./base'),
     iPhoneRunner = function (spec) {
         var that = base(spec);
-        that.internalRun = function () {
-            var runner = that.getRunnerConfig();
+        that.internalRun = function (config) {
+            
+            var data,
+                runner = that.getRunnerConfig(),
+                callbackarg = (config && "callback" in config ? config.callback : undefined);
+            
             if (runner.name === 'agent') {
-                var data = {"ip": "http://" + that.getServerStarter().getHost(), "port": that.getServerStarter().getPort(), "delay": "10"};
+                data = {"ip": "http://" + that.getServerStarter().getHost(), "port": that.getServerStarter().getPort(), "delay": "10"};
+                
                 setTimeout(function () {
+                    
+                    that.addChildProcess({device: that, type: "iphone"});
                     postRequest(runner.options, data, function () {
                             console.log('iphone call completed- ', data);
+                            callbackarg.call(that);
+                            
                         }, function (err) {
+                            that.error(err);
+                            callbackarg.call(that);
                             console.error("Error trying to run on iPhone:" + err.message);
                         }
 

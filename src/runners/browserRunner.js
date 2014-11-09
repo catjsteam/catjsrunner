@@ -51,22 +51,28 @@ var os = require('os'),
             function _open(counter, url, alias, callback) {
                 
                 var cp = openapp(url, alias, function (err) {
+                    
+                    var err;
+                 
                     if (err) {
-                        console.log("[Mobile Runner] Error occurred while trying to open the application: '" + alias + "' error:", err);
+                        err = "[Mobile Runner] Error occurred while trying to open the application: '" + alias + "' error:", err;
+                        that.error(err);
+                        console.log(err);
                     }
 
 
-                    console.log("[Mobile Runner] Opening application: ", alias, " ", cp.pid);
-                    that.addChildProcess(cp);
-
                     if (callback) {
                         callback.call(this, cp);
-                    }                  
-                });                
-               
+                    }                                    
+                });
 
+                console.log("[Mobile Runner] Opening application: ", alias, " ", cp.pid);
+                that.addChildProcess({cp: cp, type: alias});
+                
+                
                 counter++;
                 if (counter < instances) {
+                   
                     setTimeout(function() {
 
                         function getDateTime() {
@@ -96,11 +102,11 @@ var os = require('os'),
                         
                         _open(counter, url, alias, callback);
                     }, (instanceDelay));
+                    
                 } else {
-                    console.log("[Mobile Runner] Execution completed");
                     callbackarg.call(that);
                 }
-                                
+               
             }
             
             var runnerConfig = that.getRunnerConfig(),

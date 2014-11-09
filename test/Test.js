@@ -48,30 +48,15 @@ var _config = {
             "host": "auto",
             "port": "8089"
 
-        },
-        "callback": function () {
+        },       
+        
+        "callback": function (data) {
 
-            var me = this;
-            process.on('exit', function () {                
-                var processesSize = me.cpkill().length;
-                if (processesSize) {
-                    me.cpkill().forEach(function (item) {
-                        if (item) {
-                            console.log("killing", item.pid);
-                            try {
-                                item.kill();
-                                
-                            } catch(e) {
-                                console.log(e)
-                            }
-                        }
-                    });
-                }
-
+            console.log("--------------", data.length);
+            data.forEach(function(item) {
+                console.log(item.type, (("cp" in item && item.cp && item.cp.pid) ? item.cp.pid : " -- ") ,item.me.getError()) ;
             });
-            process.exit();
-
-        }
+        } 
     },
     _test = function (test, description) {
 

@@ -3,22 +3,61 @@
  * Created by retyk on 14/01/14.
  */
 
-var fs = require('fs'),
+var Q = require("q"),
+    refs = require('fs'),
     ServerStarter = require('./serverStarter'),
     runnerRouter = require('./runnerRouter'),
     data,
     config,
     serverStarter,
+    runList,   
     main = function () {
+
+        var runconfig = config.run,
+            devicesesconfig,
+            size, counter = 0,
+            deviceList = [],
+            deferred = Q.defer();
+
+        runList = [];
         if (config.run && config.run.devices) {
-            config.run.devices.forEach(function (deviceConfig) {
+
+            devicesesconfig = runconfig.devices;
+           
+            devicesesconfig.forEach(function (deviceConfig) {
+
                 if (deviceConfig.disable === "false" || !deviceConfig.disable) {
-                    runnerRouter.run(deviceConfig, serverStarter, {callback: config.callback});
+                    deviceList.push(deviceConfig);
                 }
+            });
+
+            size = deviceList.length;
+            deviceList.forEach(function (deviceConfig) {
+
+                runnerRouter.run(deviceConfig, serverStarter, {
+                    callback: function () {
+                        
+                        counter++;
+                        var runListLcl = this.getRunList();
+                        if (runListLcl) {
+                            runList = runList.concat(runListLcl);
+
+                            if (counter === size) {
+                                deferred.resolve(runList);
+                            }
+                        }
+                    }
+                });
+
+
             });
         } else {
             console.error("[runner] no valid devices configuration was found");
         }
+
+        deferred.promise.then(function(data) {
+            config.callback.call({}, data);
+        });
     };
 
 if (require.main === module) {
@@ -42,7 +81,7 @@ else {
             _infoData,
             _module = {
 
-                init: function(arg) {
+                init: function (arg) {
                     config = arg;
                     if (!config) {
                         console.error("[runner] missing configuration argument");
@@ -58,7 +97,7 @@ else {
                             console.warn("[mobilerunner] no valid configuration was found, make sure to pass the configuration object");
                         }
                     }
-                    
+
                     serverStarter = new ServerStarter(config.server);
                     main();
                 },
@@ -78,7 +117,6 @@ else {
 
                         if (devices) {
                             devices.forEach(function (device) {
-                                var device;
                                 if (device && !device.disable) {
                                     _infoData.addDevice(device);
                                 }
