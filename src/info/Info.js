@@ -1,4 +1,5 @@
-var Device = require("./Device.js");
+var Device = require("./Device.js"),
+    RunInfo = require("./RunInfo.js");
 
 function Info(config) {
 
@@ -9,6 +10,14 @@ function Info(config) {
         }
     };
 }
+
+Info.prototype.addRunnableInfo = function(data) {
+    
+    this.runinfo = new RunInfo({
+        data: data 
+    });
+    
+};
 
 Info.prototype.addDevice = function (device) {
 
@@ -42,6 +51,10 @@ Info.prototype.addDevice = function (device) {
         totalruninfo[device.name] = instances;
     }
 
+};
+
+Info.prototype.getRunnableInfo = function() {
+    return this.runinfo;  
 };
 
 Info.prototype.getTotal = function() {

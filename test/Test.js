@@ -50,12 +50,21 @@ var _config = {
 
         },       
         
-        "callback": function (data) {
+        "callback": function (info) {
+            var runinfo;
+            if (info) {
+                console.log("[Mobile Runner] Validating the actual running processes against the configuration.... ");
 
-            console.log("--------------", data.length);
-            data.forEach(function(item) {
-                console.log(item.type, (("cp" in item && item.cp && item.cp.pid) ? item.cp.pid : " -- ") ,item.me.getError()) ;
-            });
+                runinfo = info.getRunnableInfo();
+                _test(info.getTotal() === runinfo.size(), "[Mobile Runner] Total running processes 9 === 9");
+            }
+            
+//            console.log("[Mobile Runner] Validating the actual running processes against the configuration.... ");
+//            _test(_mrunnerinfo.getTotal() === data.length, "[Mobile Runner] Total running processes 9 === 9");
+//            
+//            data.forEach(function(item) {
+//                console.log(item.type, (("cp" in item && item.cp && item.cp.pid) ? item.cp.pid : " -- ") ,item.me.getError()) ;
+//            });
         } 
     },
     _test = function (test, description) {

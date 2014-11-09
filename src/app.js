@@ -10,8 +10,9 @@ var Q = require("q"),
     data,
     config,
     serverStarter,
-    runList,   
-    main = function () {
+    runList,
+    mrunner,
+    main = function (module) {
 
         var runconfig = config.run,
             devicesesconfig,
@@ -22,6 +23,10 @@ var Q = require("q"),
         runList = [];
         if (config.run && config.run.devices) {
 
+            if (module) {
+                mrunner = module.info();
+            }
+            
             devicesesconfig = runconfig.devices;
            
             devicesesconfig.forEach(function (deviceConfig) {
@@ -43,7 +48,8 @@ var Q = require("q"),
                             runList = runList.concat(runListLcl);
 
                             if (counter === size) {
-                                deferred.resolve(runList);
+                                mrunner.addRunnableInfo(runList);
+                                deferred.resolve(mrunner);
                             }
                         }
                     }
@@ -63,7 +69,7 @@ var Q = require("q"),
 if (require.main === module) {
     // command line call
 
-    data = fs.readFileSync(process.argv[2] || "./TestRunConfig.json");
+    data = refs.readFileSync(process.argv[2] || "./TestRunConfig.json");
     try {
         config = JSON.parse(data);
         serverStarter = new ServerStarter(config.server);
@@ -99,7 +105,7 @@ else {
                     }
 
                     serverStarter = new ServerStarter(config.server);
-                    main();
+                    main(_module);
                 },
 
                 /**
