@@ -32,6 +32,16 @@ function RunInfo(config) {
     }
 }
 
+
+
+RunInfo.prototype.getItems = function() {
+    return this.items;
+};
+
+RunInfo.prototype.getItemsFailed = function() {
+    return this.itemsFailed;
+};
+
 RunInfo.prototype.size = function() {
     return this.items.length;
 };
@@ -40,7 +50,7 @@ RunInfo.prototype.failedSize = function() {
     return this.itemsFailed.length;
 };
 
-RunInfo.prototype.TotalSize = function() {
+RunInfo.prototype.totalSize = function() {
     return this.size() + this.failedSize();
 };
 

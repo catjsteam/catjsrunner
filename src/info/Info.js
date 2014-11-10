@@ -1,5 +1,6 @@
 var Device = require("./Device.js"),
-    RunInfo = require("./RunInfo.js");
+    RunInfo = require("./RunInfo.js"),
+    Errors = require("./error/Errors.js");
 
 function Info(config) {
 
@@ -53,27 +54,65 @@ Info.prototype.addDevice = function (device) {
 
 };
 
+Info.prototype.test = function() {
+    
+    var runinfo = this.getRunnableInfo(),
+        sizeTest = false,
+        test = false;
+    
+    if (runinfo) {
+        sizeTest = (runinfo.size() === this.size());
+        
+        // all tests should be added in here
+        test = sizeTest; 
+    }
+    
+    return test; 
+};
+
+Info.prototype.errors = function() {
+
+    var runinfo = this.getRunnableInfo(),
+        itemsFailed = runinfo.getItemsFailed(),
+        errors = new Errors();
+    
+    if (itemsFailed) {
+        itemsFailed.forEach(function(item){
+           
+            if (item) {
+                errors.add({ 
+                    type: item.type,
+                    error: item.me.getError()
+                });    
+            }
+            
+        });
+    }
+    
+    return errors;
+};
+
 Info.prototype.getRunnableInfo = function() {
     return this.runinfo;  
 };
 
-Info.prototype.getTotal = function() {
+Info.prototype.size = function() {
     return this.total.run.all;  
 };
 
-Info.prototype.getTotalByType = function(key) {
+Info.prototype.getSizeByType = function(key) {
     return this.total.run[key];  
 };
 
-Info.prototype.getTotalLocalPC = function() {
+Info.prototype.getLocalPCSize = function() {
     return this.total.run['localpc'];  
 };
 
-Info.prototype.getTotalAndroid = function() {
+Info.prototype.getAndroidSize = function() {
     return this.total.run['android'];  
 };
 
-Info.prototype.getTotalIPhone = function() {
+Info.prototype.getIPhoneSize = function() {
     return this.total.run['iphone'];  
 };
 

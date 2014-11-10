@@ -51,12 +51,17 @@ var _config = {
         },       
         
         "callback": function (info) {
+            
             var runinfo;
             if (info) {
                 console.log("[Mobile Runner] Validating the actual running processes against the configuration.... ");
 
+                console.log("[Mobile Runner] Global test, info against the runnable: ", (!info.test() ? " Test Failed ": " Test Succeeded "));
+                console.log("[Mobile Runner] Error messages: ", (info.errors()).print());
+                
                 runinfo = info.getRunnableInfo();
-                _test(info.getTotal() === runinfo.size(), "[Mobile Runner] Total running processes 9 === 9");
+                _test(info.size() === runinfo.size(), "[Mobile Runner] Total running processes 9 === 9 ");
+                
             }
             
 //            console.log("[Mobile Runner] Validating the actual running processes against the configuration.... ");
@@ -80,14 +85,14 @@ var _config = {
     _mrunner = require("./../lib/app.js"),
     _mrunnerinfo;
 
-_info = _mrunner.init(_config);
+_mrunner.init(_config);
 _mrunnerinfo = _mrunner.info();
 
 console.log("\n[Mobile Runner] Testing...");
 console.log("[Mobile Runner] Info data: ", _mrunnerinfo, " \n");
-_test(_mrunnerinfo.getTotalByType("chrome") === 4, " Info tests chrome === 4 ");
-_test(_mrunnerinfo.getTotalLocalPC() === 8, " Info tests localpc  === 8 ");
-_test(_mrunnerinfo.getTotal() === 9, " Info tests all  === 9 ");
+_test(_mrunnerinfo.getSizeByType("chrome") === 4, " Info tests chrome === 4 ");
+_test(_mrunnerinfo.getLocalPCSize() === 8, " Info tests localpc  === 8 ");
+_test(_mrunnerinfo.size() === 9, " Info tests all  === 9 ");
 console.log("\n[Mobile Runner] Running sample configuration ");
 
 _mrunner.run();

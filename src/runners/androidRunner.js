@@ -25,7 +25,7 @@ var base = require('./base'),
                         callbackarg.call(that);
                         
                     } else {
-                        console.log("number of found devices " + devices.length);
+                        console.log("List of devices attached " + devices.length);
                         size = (devices ? devices.length : 0); 
                         
                         if (size) {
@@ -38,7 +38,7 @@ var base = require('./base'),
                                 }
                             });
                         } else {
-                            that.error("number of found devices " + devices.length);
+                            that.error("List of devices attached " + devices.length);
                             that.addChildProcess({device: that, type: "android"});
                             callbackarg.call(that);
                         }

@@ -12,6 +12,6 @@ function Device(config) {
         }
     }
 
-};
+}
 
 module.exports = Device;
