@@ -1,6 +1,7 @@
 var Device = require("./Device.js"),
     RunInfo = require("./RunInfo.js"),
-    Errors = require("./error/Errors.js");
+    Errors = require("./error/Errors.js"),
+    util = require("util");
 
 function Info(config) {
 
@@ -74,9 +75,11 @@ Info.prototype.errors = function() {
 
     var runinfo = this.getRunnableInfo(),
         itemsFailed = runinfo.getItemsFailed(),
-        errors = new Errors();
+        errors;
     
-    if (itemsFailed) {
+    if (itemsFailed && util.isArray(itemsFailed) && itemsFailed.length > 0) {
+
+        errors = new Errors();
         itemsFailed.forEach(function(item){
            
             if (item) {
