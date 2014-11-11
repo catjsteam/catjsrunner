@@ -93,7 +93,7 @@ We recommend to install mobilerunner as a cli
                  "id": "all",
                  "runner": {
                      "name": "agent",
-                     "options": {"ip": "192.168.1.107", "port": "54321", "path": "/cat", timeout: 20000}
+                     "options": {"ip": "192.168.1.107", "port": "54321", "path": "/cat", "timeout": 20000}
                  }
              }
          ]
