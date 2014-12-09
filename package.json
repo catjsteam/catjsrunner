@@ -1,5 +1,5 @@
 {
-    "name": "mobilerunner",
+    "name": "catjsrunner",
     "version": "0.3.3",
     "author": {
         "name": "Pablo Retyk"
@@ -18,7 +18,7 @@
         "mobile",
         "runner"
     ],
-    "main": "./lib/app.js",
+    "main": "./src/app.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/catjsteam/catjsrunner"
