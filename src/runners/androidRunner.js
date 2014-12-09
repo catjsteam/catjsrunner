@@ -7,25 +7,49 @@ var base = require('./base'),
     androidRunner = function (spec) {
         var that = base(spec);
 
-        that.internalRun = function () {
-            var adb = require('adbkit');
-            var deviceClient = adb.createClient();
-
+        that.internalRun = function (config) {
+            var adb = require('adbkit'),
+                deviceClient = adb.createClient(),
+                callbackarg = (config && "callback" in config ? config.callback : undefined),
+                size = 0, counter = 0;
+            
             if (typeof that.getId() === 'undefined' || that.getId() === 'all' || that.getId() === '') {
                 console.log("run on all devices");
 
                 deviceClient.listDevices(function (err, devices) {
+                    
                     if (err) {
                         console.error("error listing devices " + err);
+                        that.error(err);
+                        that.addChildProcess({device: that, type: "android"});
+                        callbackarg.call(that);
+                        
                     } else {
-                        console.log("number of found devices " + devices.length)
-                        devices.forEach(function (device) {
-                            runOnAndroid(that.getRunnerConfig(), device.id, that.getServerStarter(), deviceClient);
-                        });
+                        console.log("List of devices attached " + devices.length);
+                        size = (devices ? devices.length : 0); 
+                        
+                        if (size) {
+                            devices.forEach(function (device) {
+                                that.addChildProcess({device: device, type: "android"});
+                                runOnAndroid(that.getRunnerConfig(), device.id, that.getServerStarter(), deviceClient);
+                                counter++;
+                                if (counter < size) {
+                                    callbackarg.call(that);
+                                }
+                            });
+                        } else {
+                            that.error("List of devices attached " + devices.length);
+                            that.addChildProcess({device: that, type: "android"});
+                            callbackarg.call(that);
+                        }
                     }
                 });
+                
             } else {
+                
+                that.addChildProcess({device: that, type: "android"});
                 runOnAndroid(that.getRunnerConfig(), that.getId(), that.getServerStarter(), deviceClient);
+                callbackarg.call(that);
             }
         }
 
@@ -68,19 +92,23 @@ var base = require('./base'),
                         port: that.getServerStarter().getPort(),
                         id: id
                     }
+                    var component = 'com.catjs.catjsteam.catjsrunnerapp/.CatjsActivity';
+                    var extraKey = "catserveraddress";
+                    var extraValue = "http://" + servermetadata.host + ":" + servermetadata.port;
                     var options = {
-                        component: 'com.hp.aamobile.cat/.Main',
+                        component: component,
                         extras: [
-                            {"key": "SERVERMETADATA", "value":  JSON.stringify(servermetadata) }
+                            {"key": extraKey, "value":  extraValue }
                         ]
                     }
 
                     deviceClient.startActivity(id, options, function (err) {
+
                         if (err) {
-                            console.error("Could not run activity on " + id)
+                            console.error("Could not run activity on " + id);
                         }
                         else {
-                            console.log("Activity ran on " + id)
+                            console.log("Activity : " + component + "\n" + "extra : " + extraKey + "\t value: " + extraValue);
                         }
 
                     })
