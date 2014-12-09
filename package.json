@@ -1,43 +1,47 @@
 {
-  "name": "catjsrunner",
-  "version": "0.2.17",
-  "author": {
-    "name": "Pablo Retyk"
-  },
-  "maintainers": [
-    {
-      "name": "Arik Levin",
-      "email": "lewin.arik@hp.com"
+    "name": "mobilerunner",
+    "version": "0.2.40",
+    "author": {
+        "name": "Pablo Retyk"
     },
-    {
-      "name": "Ran Snir",
-      "email": "ran.snir@hp.com"
+    "maintainers": [
+        {
+            "name": "Arik Levin",
+            "email": "lewin.arik@hp.com"
+        },
+        {
+            "name": "Ran Snir",
+            "email": "ran.snir@hp.com"
+        }
+    ],
+    "keywords": [
+        "mobile",
+        "runner"
+    ],
+    "main": "./lib/app.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/catjsteam/catjsrunner"
+    },
+    "engines": {
+        "node": "> 0.10.0"
+    },
+    "dependencies": {
+        "adbkit": "~2.0.15",
+        "open": "~0.0.5",
+        "q": "^1.0.1"
+    },
+    "scripts": {
+        "test": "node test/Test.js"
+    },
+    "bin": {
+        "catrunner": "lib/app.js"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.2",
+        "grunt-exec": "~0.4.5",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-compress": "~0.7.0"
     }
-  ],
-  "keywords": [
-    "mobile",
-    "runner"
-  ],
-  "main": "./lib/app.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/catjsteam/catjsrunner"
-  },
-  "dependencies": {
-    "adbkit": "~2.0.15",
-    "open": "~0.0.5"
-  },
-  "scripts": {
-      "test": "node test/Todo.js"
-  },
-  "bin": {
-    "catrunner": "lib/app.js"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-exec": "~0.4.5",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-compress": "~0.7.0"
-  }
 }

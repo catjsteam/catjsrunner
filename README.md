@@ -5,8 +5,8 @@ This tool is very useful when combined with mobile web automation frameworks lik
 
 ## Release Notes
 
-* Runner installation error fix
-* Android support fix
+* Runner information API (Actual and Configuration) with errors in case the devices or browsers failed to be opened
+* Console notification in case the connection of an iphone device request fails
 
 
 ##Installation
@@ -20,61 +20,39 @@ We recommend to install mobilerunner as a cli
  If omitted the *mobilerunner* will search for a config file named *TestRunConfig.json* in the working directory.  
 
 ## Support
- Currently supported browsers names for cross platform (Linux, Darwin and win32):  
+* *browsers* Currently supported browsers names for cross platform (Linux, Darwin and win32):  
+  
+    * *firefox*
+    * *safari*
+    * *chrome*  
+    * *others* In case you wish to open other browser just set the name with the application's name    
+        We are using "open" module for staring the applications  
  
- * firefox
- * safari
- * chrome
- 
- In case you wish to open other browser just set the name with the application's name.  
- We are using "open" module for staring the applications.
+* *iPhone* agent application will be supported later on
+* *android* agent application is supported and is part of the module installation
 
 ##Config file
 
- The config file is a json file with the following elements:
+ The config file is a json file with the following properties:
 
-###devices
- An array defining the devices, each device is in the following format:
+ * *devices* An array that defines the devices
+    * *disable* [true | false] Whether to disable the device
+    * *type* The type of device [localpc | android | iphone]
+    * *runner* The configuration of the device's runner
+        * *name*  In case of 'localpc' it is the name of the application e.g browser types [chrome | firefox | safari]
+        * *address*  (optional) The application's path after the base url domain
+        * *options*  (optional) 
+            * *localpc* 
+                * *path* of the browser, if omitted the default installation will be used
+                * *instances* to be opened per browser
+            * *android*
+                * *path* of the apk runner (provided with this package), the default path is `./lib/resources`
+            * *iphone* 
+                * *ip* address of the device 
+                * *port* the agent's port 
+                * *ip* address of the device 
 
-####disable
-true/false according if we you startup this device
-
-####type
-the type of device it can be localpc/android/iphone
-
-####runner
-Configuration of the runner:
-* name - in localpc it is the name of the browser (chrome, firefox, safari)
-* address - (optional) the start path after the url domain
-* options - (optional) for localpc it can contain the path of the browser, if omitted the default installation will be used,
-for android it will contain the path of the apk runner (provided with this package), the default path is `./lib/resources`
-for iOS it contains the ip address of the device (currently not provided will be provided soon)
-
-###runningEnvironment (WIP)
-Currently not in use
-
-###server
-This is the configuration of the server
-
-####host
-
-####port
-
-####protocol
-
-####autostart (optional)
-
-Tells if mobilerunner will start the server according to the following configuration
-
-####nodeStartFile
-The start file
-
-####args
-Arguments to add to start command
-
-####cwd
-Working directory
-
+ * *server* The server configuration that will be used for the base URL
 
 ###Config file example
 
@@ -115,24 +93,15 @@ Working directory
                  "id": "all",
                  "runner": {
                      "name": "agent",
-                     "options": {"ip": "192.168.1.107", "port": "54321", "path": "/cat"}
+                     "options": {"ip": "192.168.1.107", "port": "54321", "path": "/cat", "timeout": 20000}
                  }
              }
          ]
-     },
-     "runningEnvironment": {
-         "type": "local|lab",
-         "host": "",
-         "authtoken": ""
-     },
+     }
      "server": {
          "host" : "auto",
-         "port" : "8089",
-         "autostart" : {
-             "args": ["-s"],
-             "nodeStartFile": "catcli.cmd",
-             "cwd": "c:/catgithub/CATCore/test/sencha/cat-project"
-         }
+         "port" : "8089"         
      }
  }
  ```
+
