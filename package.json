@@ -1,6 +1,6 @@
 {
-    "name": "mobilerunner",
-    "version": "0.2.40",
+    "name": "catjsrunner",
+    "version": "0.3.1",
     "author": {
         "name": "Pablo Retyk"
     },
@@ -35,7 +35,7 @@
         "test": "node test/Test.js"
     },
     "bin": {
-        "catrunner": "lib/app.js"
+        "catrunner": "src/app.js"
     },
     "devDependencies": {
         "grunt": "~0.4.2",
