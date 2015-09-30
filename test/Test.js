@@ -30,7 +30,7 @@ var _config = {
                     "id": "all",
                     "runner": {
                         "name": "apk",
-                        "options": {"path": ".lib/resources/catrunner.apk"}
+                        "options": {"path": ".src/resources/catrunner.apk"}
                     }
                 },
                 {
@@ -77,7 +77,7 @@ var _config = {
 
     },
     _info,
-    _mrunner = require("./../lib/app.js"),
+    _mrunner = require("./../src/app.js"),
     _mrunnerinfo;
 
 _mrunner.init(_config);
