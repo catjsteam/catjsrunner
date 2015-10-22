@@ -2,7 +2,7 @@
     "run": {
         "devices": [
             {
-                "disable": false,
+                "disable": true,
                 "type": "localpc",
                 "runner": {
                     "name": "chrome",
@@ -11,7 +11,7 @@
                 }
             },
             {
-                "disable": false,
+                "disable": true,
                 "type": "localpc",
                 "runner": {
                     "name": "firefox",
@@ -21,6 +21,15 @@
             },
             {
                 "disable": false,
+                "type": "androidBrowser",
+                "id": "all",
+                "runner": {
+                    "name": "chrome",
+                    "address": "/index.html"
+                }
+            },
+            {
+                "disable": true,
                 "type": "android",
                 "id": "all",
                 "runner": {
