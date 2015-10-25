@@ -5,6 +5,8 @@ function RunnerRouter() {
                 return  require('./runners/browserRunner');
             case 'android':
                 return require('./runners/androidRunner');
+            case 'androidBrowser':
+                return require('./runners/androidBrowserRunner');
             case 'iphone':
                 return  require('./runners/iPhoneRunner');
         }
