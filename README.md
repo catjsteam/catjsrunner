@@ -134,7 +134,7 @@ We recommend to install mobilerunner as a cli
                  }
              }
          ]
-     }
+     },
      "server": {
          "host" : "auto",
          "port" : "8089"         
