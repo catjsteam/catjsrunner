@@ -82,7 +82,7 @@ We recommend to install mobilerunner as a cli
  }
  ```
 
-### Fuul Config file examples
+### Full Config file examples
 
  ```json
  {
