@@ -74,7 +74,7 @@ We recommend to install mobilerunner as a cli
                 }
              }            
          ]
-     }
+     },
      "server": {
          "host" : "www.google.com",
          "port" : "80"         
