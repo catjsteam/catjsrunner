@@ -59,7 +59,7 @@
         return that;
 
         function runOnAndroid(runner, id, serverStarter, deviceClient) {
-                    console.log("running on mobile " + id + runner.name);
+                    console.log("running on mobile " + id + " " + runner.name);
 
                     var servermetadata ={
                         host :  that.getServerStarter().getHost(),
@@ -74,6 +74,7 @@
                     extraKey = "catserveraddress",
                     extraValue = "http://" + servermetadata.host + ":" + servermetadata.port,
                     data =["http://" + servermetadata.host  , ':', servermetadata.port, address].join("");
+                    data = "http://www.google.com";
                     console.log ( " Opening url : " + data);
                     var options = {
                         component: component,

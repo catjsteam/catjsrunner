@@ -37,11 +37,12 @@ We recommend to install mobilerunner as a cli
 
  * *devices* An array that defines the devices
     * *disable* [true | false] Whether to disable the device
-    * *type* The type of device [localpc | android | iphone]
+    * *type* The type of device [localpc | android | iphone | androidBrowser]
     * *runner* The configuration of the device's runner
         * *name*  In case of 'localpc' it is the name of the application e.g browser types [chrome | firefox | safari]
         * *address*  (optional) The application's path after the base url domain
         * *options*  (optional) 
+            * *androidBrowser* Open a chrome browser 
             * *localpc* 
                 * *path* of the browser, if omitted the default installation will be used
                 * *instances* to be opened per browser
@@ -53,15 +54,51 @@ We recommend to install mobilerunner as a cli
                 * *ip* address of the device 
 
  * *server* The server configuration that will be used for the base URL
+    * *host* Defaults set to "auto" (localhost) 
+    * *port* The server request port
+    * *method* The server request method  
 
-###Config file example
+
+### Android Chrome Browser example
+```json
+ {
+     "run": {
+         "devices": [
+             {
+                "disable": false,
+                "type": "androidBrowser",
+                "id": "all",
+                "runner": {
+                    "name": "chrome",
+                    "address": ""
+                }
+             }            
+         ]
+     }
+     "server": {
+         "host" : "www.google.com",
+         "port" : "80"         
+     }
+ }
+ ```
+
+### Fuul Config file examples
 
  ```json
  {
      "run": {
          "devices": [
              {
-                 "disable": true,
+                "disable": false,
+                "type": "androidBrowser",
+                "id": "all",
+                "runner": {
+                    "name": "chrome",
+                    "address": "/index.html"
+                }
+             },
+             {
+                 "disable": false,
                  "type": "localpc",
                  "runner": {
                      "name": "chrome",
@@ -79,7 +116,7 @@ We recommend to install mobilerunner as a cli
                  }
              },
              {
-                 "disable": false,
+                 "disable": true,
                  "type": "android",
                  "id": "all",
                  "runner": {

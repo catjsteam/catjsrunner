@@ -25,7 +25,7 @@
                 "id": "all",
                 "runner": {
                     "name": "chrome",
-                    "address": "http://www.google.com"
+                    "address": "/index.html"
                 }
             },
             {
